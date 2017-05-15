@@ -20,3 +20,11 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+Bitacora/dist/
+Bitacora/build/
+Bitacora/nbproject/
+Bitacora/src/java/dao/Conexion.java
+Bitacora/nbproject/private/private.properties
+Bitacora/nbproject/private/private.xml
+Bitacora/nbproject/project.properties
