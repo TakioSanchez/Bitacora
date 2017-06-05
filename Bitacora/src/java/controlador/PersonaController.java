@@ -5,16 +5,21 @@
  */
 package controlador;
 
+import dao.PersonaCRUD;
+import entidades.Persona;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import sun.awt.X11.XConstants;
 
 /**
  *
@@ -38,11 +43,11 @@ public class PersonaController extends HttpServlet {
         
         // Sesiones
         HttpSession sesion = request.getSession(false);
-        String nombre_usuario = (String) sesion.getAttribute("nombre_usuario");
-        String rol = (String) sesion.getAttribute("rol");
-        if (nombre_usuario.equals("")) {
-            response.sendRedirect("/inicio/administrador.jsp");
-        } else if (rol.equals("Administrador") || rol.equals("Empleado") || rol.equals("Vendedor")) {
+        //String nombre_usuario = (String) sesion.getAttribute("nombre_usuario");
+        //String rol = (String) sesion.getAttribute("rol");
+        //if (nombre_usuario.equals("")) {
+            //response.sendRedirect("/inicio/administrador.jsp");
+        //} else if (rol.equals("Administrador") || rol.equals("Empleado") || rol.equals("Vendedor")) {
             //Acción a realizar
             String action = request.getParameter("action");
             switch (action) {
@@ -52,6 +57,7 @@ public class PersonaController extends HttpServlet {
                  */
                 case "insertar":
                     //registrarPersona(request, response, sesion, action);
+                    registrarPersona(request, response, action);
                     break;
                 case "actualizar":
                     //actualizarPersona(request, response, sesion, action);
@@ -64,7 +70,7 @@ public class PersonaController extends HttpServlet {
                     //prepararNuevoPersona(request, response, sesion);
                     break;
                 case "listar":
-                    //listarPersonas(request, response, sesion, action);
+                    listarPersonas(request, response, action);
                     break;
                 case "modificar":
                     //modificarPersona(request, response, sesion, action);
@@ -75,15 +81,15 @@ public class PersonaController extends HttpServlet {
                 case "buscar_persona":
                     //buscarPersona(request, response, sesion, action);
             }
-        } else {
-            try {
-                sesion.invalidate();
-            } catch (Exception e) {
-                System.out.println(e);
-                response.sendRedirect("/inicio/administrador.jsp");
-            }
-            response.sendRedirect("/inicio/administrador.jsp");
-        }
+        //} else {
+        //    try {
+        //        sesion.invalidate();
+        //    } catch (Exception e) {
+        //        System.out.println(e);
+        //        response.sendRedirect("/inicio/administrador.jsp");
+        //    }
+        //    response.sendRedirect("/inicio/administrador.jsp");
+        //}
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -125,15 +131,50 @@ public class PersonaController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
-    /*private void listarPersonas(HttpServletRequest request, HttpServletResponse response, HttpSession sesion, String action) {
+    private void registrarPersona(HttpServletRequest request, HttpServletResponse response, String action) {
+        Persona persona = extraerPersonaForm(request);
+        PersonaCRUD personaCRUD = new PersonaCRUD();
+        try {
+            personaCRUD.registrarPersona(persona);
+            //enviar mensaje -> registrado
+            response.sendRedirect("/bitacora/PersonaController?action=listar");
+        } catch (Exception ex) {
+            listarPersonas(request, response, "error_registrar");
+            System.out.println(ex);
+            Logger.getLogger(PersonaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private Persona extraerPersonaForm(HttpServletRequest request) {
+        Persona persona = new Persona();
+        persona.setId_persona(request.getParameter("id_persona"));
+        persona.setNombre_persona(request.getParameter("nombre_persona"));
+        persona.setApellidos_persona(request.getParameter("apellidos_persona"));
+        persona.setRol(request.getParameter("rol"
+                + ""));
+        return persona;
+    }
+    
+    private void listarPersonas(HttpServletRequest request, HttpServletResponse response, String action) {
         List<Persona> listaPersonas;
         PersonaCRUD personaCRUD = new PersonaCRUD();
         try {
-            listaPersonas = (List<Persona>) personaCRUD.listarPersona((String) sesion.getAttribute("id_jefe"), (String) sesion.getAttribute("rol"));
+            listaPersonas = (List<Persona>) personaCRUD.listarPersona();
             mostrarPersonas(request, response, listaPersonas, action);
         } catch (Exception ex) {
             System.out.println(ex);
             Logger.getLogger(PersonaController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }*/
+    }
+    
+    private void mostrarPersonas(HttpServletRequest request, HttpServletResponse response, List<Persona> listaPersonas, String action) {
+        request.setAttribute("listaPersonas", listaPersonas);
+        RequestDispatcher view = request.getRequestDispatcher("/persona/listarPersonas.jsp");
+        try {
+            view.forward(request, response);
+        } catch (ServletException | IOException ex) {
+            System.err.println("No se pudo mostrar la lista de personas");
+            Logger.getLogger(PersonaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

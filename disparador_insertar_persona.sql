@@ -32,7 +32,25 @@ BEGIN
 END; //
 DELIMITER ;
 
+DROP FUNCTION IF EXISTS eliminar_persona;
+DELIMITER //
+CREATE FUNCTION eliminar_persona (_id_persona VARCHAR(15))
+RETURNS INT(1)
+BEGIN
+	IF EXISTS (SELECT id_persona FROM persona WHERE id_persona = _id_persona) THEN
+		DELETE FROM persona WHERE id_persona = _id_persona;
+        RETURN 1;
+    ELSE
+		RETURN 0;
+    END IF;
+END ; //
+DELIMITER ;
+
 select * FROM  persona;
+
 
 SELECT insertar_persona ('2012060174','Takio','Sánchez Ramos','Administrador');
 SELECT insertar_persona ('201206169', 'Leonardo', 'Marcos Santiago', 'Administrado');
+SELECT insertar_persona ('2012060175','Juan','X X','Administrador');
+
+SELECT eliminar_persona ('2012060175');
