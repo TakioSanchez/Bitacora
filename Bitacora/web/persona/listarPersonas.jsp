@@ -44,7 +44,7 @@
                                         + "<td>" + persona.getNombre_persona() + "</td>"
                                         + "<td>" + persona.getApellidos_persona() + "</td>"
                                         + "<td>" + persona.getRol() + "</td>"
-                                        + "<td><a class='btn btn-warning' href=\"/aserradero/PersonaController?action=modificar&id_persona=" + persona.getId_persona() + "\">Modificar</a></td>"
+                                        + "<td><a class='btn btn-warning' href=\"/Bitacora/PersonaController?action=modificar&id_persona=" + persona.getId_persona() + "\">Modificar</a></td>"
                                         + "<td><a class='btn btn-danger' href=\"javascript:if (confirm('¿Estás seguro de eliminar?')){parent.location='/aserradero/PersonaController?action=eliminar&id_persona=" + persona.getId_persona() + "';};\">Eliminar</a></td>" + "</tr>");
                                 i++;
                             }%>
