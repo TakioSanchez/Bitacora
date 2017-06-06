@@ -51,7 +51,7 @@
                     </tbody>
                 </table>
                 <div class="agregar_element">
-                    <input type="button" class="btn btn-primary" value="Agregar persona" onClick=" window.location.href = '/bitcora/PersonaController?action=nuevo'">
+                    <input type="button" class="btn btn-primary" value="Agregar persona" onClick=" window.location.href = '/Bitacora/persona/nuevoPersona.jsp'">
                 </div>
             </div>
         </div>

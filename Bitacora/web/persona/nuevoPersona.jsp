@@ -6,15 +6,16 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Registrar persona</title>
     </head>
-    <body>
-        <form action="/bitacora/PersonaController?action=insertar" method="post" id="form_registro_persona">
+    
+        
             <h3>Agregar persona</h3>
-            <fieldset id="user-details">
+            <form action="/Bitacora/PersonaController?action=insertar" method="post" id="formregistro" onsubmit="return validarPersona()">
+                <fieldset id="user-details">
                 <table>
                     <tr>
                         <td style="padding-left: 10px;"><label>Matricula :</label></td>
@@ -30,9 +31,9 @@
                     </tr>
                     <tr>
                         <td style="padding-left: 10px;"><label>Rol :</label></td>
-                        <td style="padding-left: 10px;"><select name="rol_persona">
-                                <option value="alumno">Alumno</option>
-                                <option value="administrador">Administrador</option>
+                        <td style="padding-left: 10px;"><select name="rol">
+                                <option value="Alumno">Alumno</option>
+                                <option value="Administrador">Administrador</option>
                             </select>
                         </td>
                     </tr>
@@ -41,6 +42,11 @@
                     </tr>
                 </table>
             </fieldset>
-        </form>
-    </body>
-</html>
+            <div class="form-group pull-right col-md-11">
+                <a href="/Bitacora/PersonaController?action=listar"><input class="btn btn-warning col-md-5 pull-left" type="button" value="Cancelar"/></a>
+                <input class="btn btn-success col-md-5 pull-right" type="submit" id="registrar" value="Guardar">
+            </div>
+            </form>
+        
+    
+

@@ -57,7 +57,9 @@ public class PersonaController extends HttpServlet {
                  */
                 case "insertar":
                     //registrarPersona(request, response, sesion, action);
-                    registrarPersona(request, response, action);
+                    //registrarPersona(request, response, action);
+                    insertarPersona(request, response, action);
+                    
                     break;
                 case "actualizar":
                     //actualizarPersona(request, response, sesion, action);
@@ -67,7 +69,7 @@ public class PersonaController extends HttpServlet {
                  * *********************
                  */
                 case "nuevo":
-                    //prepararNuevoPersona(request, response, sesion);
+                    //insertarPersona(request, response, action);
                     break;
                 case "listar":
                     listarPersonas(request, response, action);
@@ -131,13 +133,24 @@ public class PersonaController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
-    private void registrarPersona(HttpServletRequest request, HttpServletResponse response, String action) {
+    private void insertarPersona(HttpServletRequest request, HttpServletResponse response, String action) {
         Persona persona = extraerPersonaForm(request);
         PersonaCRUD personaCRUD = new PersonaCRUD();
+        int resultado;
         try {
-            personaCRUD.registrarPersona(persona);
+            resultado = personaCRUD.registrarPersona(persona);
+            //System.err.println("Resultado "+resultado);
             //enviar mensaje -> registrado
-            response.sendRedirect("/bitacora/PersonaController?action=listar");
+            if (resultado == 1){
+                response.sendRedirect("/Bitacora/PersonaController?action=listar");
+            }else{
+                //if (resultado == 0){
+                    response.sendRedirect("/Bitacora/error/error.jsp");
+                    //request.setAttribute('respuesta', );
+                //}else{
+                    //response.sendRedirect("/Bitacora/error/error.jsp");
+                //}
+            }
         } catch (Exception ex) {
             listarPersonas(request, response, "error_registrar");
             System.out.println(ex);
@@ -150,8 +163,8 @@ public class PersonaController extends HttpServlet {
         persona.setId_persona(request.getParameter("id_persona"));
         persona.setNombre_persona(request.getParameter("nombre_persona"));
         persona.setApellidos_persona(request.getParameter("apellidos_persona"));
-        persona.setRol(request.getParameter("rol"
-                + ""));
+        persona.setRol(request.getParameter("rol"));
+        System.out.println(persona.getRol());
         return persona;
     }
     

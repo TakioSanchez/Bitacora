@@ -1,6 +1,6 @@
 <%-- 
-    Document   : newjsp
-    Created on : Jun 5, 2017, 12:39:05 PM
+    Document   : error
+    Created on : Jun 6, 2017, 4:42:29 PM
     Author     : sanchez
 --%>
 
@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Error </h1>
     </body>
 </html>
