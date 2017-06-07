@@ -16,17 +16,17 @@ CREATE DATABASE IF NOT EXISTS bitacora;
 
 USE bitacora;
 
-CREATE TABLE personas(
+CREATE TABLE persona(
 	id_persona VARCHAR(15) NOT NULL,
     nombre_persona VARCHAR(60) NOT NULL,
     apellidos_persona VARCHAR(60) NOT NULL,
-    rol VARCHAR(15) NOT NULL,
+    rol ENUM('Alumno','Administrador'),
     PRIMARY KEY (id_persona)
 )ENGINE=INNODB 
  DEFAULT CHARSET=utf8 
  COLLATE=utf8_general_ci;
  
-CREATE TABLE alumnos(
+CREATE TABLE alumno(
 	matricula VARCHAR(15) NOT NULL,
     carrera VARCHAR(60) NOT NULL,
     semestre VARCHAR(15) NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE alumnos(
  DEFAULT CHARSET=utf8 
  COLLATE=utf8_general_ci;
  
-CREATE TABLE usuarios(
+CREATE TABLE usuario(
 	usuario 		VARCHAR(15) NOT NULL,
     contrasenia			varchar(50) NOT NULL,
 	metodo 				ENUM('sha1') DEFAULT 'sha1' NOT NULL, -- metodo para encriptar contraseña
@@ -45,7 +45,7 @@ CREATE TABLE usuarios(
  DEFAULT CHARSET=utf8 
  COLLATE=utf8_general_ci;
 
-CREATE TABLE salas(
+CREATE TABLE sala(
 	id_sala INT unsigned NOT NULL auto_increment,
     nombre_sala VARCHAR(30) NOT NULL,
     num_maquinas INT(3) NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE salas(
  AUTO_INCREMENT=1;
 
 
-CREATE TABLE registros(
+CREATE TABLE registro(
 	id_registro INT unsigned NOT NULL auto_increment,
     id_sala INT unsigned NOT NULL,
     num_equipo INT(3) NOT NULL,
@@ -76,20 +76,31 @@ CREATE TABLE registros(
 	Modificaciones para las
 	Restricciones de llaves foráneas
 */
-ALTER TABLE alumnos
+ALTER TABLE alumno
 	ADD CONSTRAINT fkalumnos_personas
     FOREIGN KEY (matricula)
-    REFERENCES personas(id_persona) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE registros 
-	ADD CONSTRAINT fkregistros_salas
-	FOREIGN KEY (id_sala)
-    REFERENCES salas(id_sala) ON DELETE CASCADE ON UPDATE CASCADE;
+    REFERENCES persona(id_persona) ON DELETE CASCADE ON UPDATE CASCADE;
     
-ALTER TABLE registros
+ALTER TABLE usuario
+	ADD CONSTRAINT fkusuarios_personas
+    FOREIGN KEY (usuario)
+    REFERENCES persona(id_persona) ON DELETE CASCADE ON UPDATE CASCADE;
+    
+ALTER TABLE sala
+	ADD CONSTRAINT fksalas_personas
+    FOREIGN KEY (id_encargado)
+    REFERENCES persona(id_persona) ON DELETE CASCADE ON UPDATE CASCADE;
+    
+ALTER TABLE registro
 	ADD CONSTRAINT fkregistros_alumnos
 	FOREIGN KEY (matricula)	
-    REFERENCES alumnos(matricula) ON DELETE CASCADE ON UPDATE CASCADE;
+    REFERENCES alumno(matricula) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE registro 
+	ADD CONSTRAINT fkregistros_salas
+	FOREIGN KEY (id_sala)
+    REFERENCES sala(id_sala) ON DELETE CASCADE ON UPDATE CASCADE;
+    
 
 /*
 ALTER TABLE Alumnos
