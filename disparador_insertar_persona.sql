@@ -46,11 +46,8 @@ BEGIN
 END ; //
 DELIMITER ;
 
-select * FROM  persona;
 
-
-SELECT insertar_persona ('2012060174','Takio','Sánchez Ramos','Administrador');
-SELECT insertar_persona ('201206169', 'Leonardo', 'Marcos Santiago', 'Administrado');
-SELECT insertar_persona ('2012060175','Juan','X X','Administrador');
-
-SELECT eliminar_persona ('2012060175');
+-- SELECT insertar_persona ('2012060174','Takio','Sánchez Ramos','Administrador');
+-- SELECT insertar_persona ('201206169', 'Leonardo', 'Marcos Santiago', 'Administrado');
+-- SELECT insertar_persona ('2012060175','Juan','X X','Administrador');
+-- SELECT eliminar_persona ('2012060175');
