@@ -123,4 +123,19 @@ public class PersonaCRUD extends Conexion{
         }
     }
     
+    public Object modificarPersona(Object objeto) throws Exception {
+        Persona personaM = (Persona) objeto;
+        Persona persona = null;
+        this.abrirConexion();
+        try (PreparedStatement st = this.conexion.prepareStatement("SELECT * FROM persona WHERE id_persona = ? ")) {
+            st.setString(1, personaM.getId_persona());
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    persona = (Persona) extraerPersona(rs);
+                }
+            }
+        }
+        return persona;
+    }
+    
 }

@@ -10,6 +10,7 @@ import entidades.Persona;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,7 +61,7 @@ public class PersonaController extends HttpServlet {
                     
                     break;
                 case "actualizar":
-                    //actualizarPersona(request, response, sesion, action);
+                    actualizarPersona(request, response, action);
                     break;
                 /**
                  * *************** Respuestas a métodos GET
@@ -73,7 +74,7 @@ public class PersonaController extends HttpServlet {
                     listarPersonas(request, response, action);
                     break;
                 case "modificar":
-                    //modificarPersona(request, response, sesion, action);
+                    modificarPersona(request, response, action);
                     break;
                 case "eliminar":
                     eliminarPersona(request, response, action);
@@ -162,7 +163,6 @@ public class PersonaController extends HttpServlet {
         persona.setNombre_persona(request.getParameter("nombre_persona"));
         persona.setApellidos_persona(request.getParameter("apellidos_persona"));
         persona.setRol(request.getParameter("rol"));
-        System.out.println(persona.getRol());
         return persona;
     }
     
@@ -197,6 +197,33 @@ public class PersonaController extends HttpServlet {
             listarPersonas(request, response, action);
         } catch (Exception ex) {
             listarPersonas(request, response, "error_eliminar");
+            Logger.getLogger(PersonaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void modificarPersona(HttpServletRequest request, HttpServletResponse response, String action) {
+        Persona personaEC = new Persona();
+        personaEC.setId_persona(request.getParameter("id_persona"));
+        PersonaCRUD personaCRUD = new PersonaCRUD();
+        try {
+            Persona persona = (Persona) personaCRUD.modificarPersona(personaEC);
+            request.setAttribute("persona", persona);
+            RequestDispatcher view = request.getRequestDispatcher("/persona/actualizarPersona.jsp");
+            view.forward(request, response);
+        } catch (Exception ex) {
+            listarPersonas(request, response, "error_modificar");
+            Logger.getLogger(PersonaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void actualizarPersona(HttpServletRequest request, HttpServletResponse response, String action) {
+        Persona persona = extraerPersonaForm(request);
+        PersonaCRUD personaCRUD = new PersonaCRUD();
+        try {
+            personaCRUD.actualizarPersona(persona,persona.getId_persona());
+            listarPersonas(request, response, action);
+        } catch (Exception ex) {
+            listarPersonas(request, response, "error_actualizar");
             Logger.getLogger(PersonaController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
