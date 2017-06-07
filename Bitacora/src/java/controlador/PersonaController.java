@@ -56,8 +56,6 @@ public class PersonaController extends HttpServlet {
                  * *********************
                  */
                 case "insertar":
-                    //registrarPersona(request, response, sesion, action);
-                    //registrarPersona(request, response, action);
                     insertarPersona(request, response, action);
                     
                     break;
@@ -78,7 +76,7 @@ public class PersonaController extends HttpServlet {
                     //modificarPersona(request, response, sesion, action);
                     break;
                 case "eliminar":
-                    //eliminarPersona(request, response, sesion, action);
+                    eliminarPersona(request, response, action);
                     break;
                 case "buscar_persona":
                     //buscarPersona(request, response, sesion, action);
@@ -187,6 +185,18 @@ public class PersonaController extends HttpServlet {
             view.forward(request, response);
         } catch (ServletException | IOException ex) {
             System.err.println("No se pudo mostrar la lista de personas");
+            Logger.getLogger(PersonaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void eliminarPersona(HttpServletRequest request, HttpServletResponse response, String action) {
+        String id = request.getParameter("id_persona");
+        PersonaCRUD personaCRUD = new PersonaCRUD();
+        try {
+            personaCRUD.eliminarPersona(id);
+            listarPersonas(request, response, action);
+        } catch (Exception ex) {
+            listarPersonas(request, response, "error_eliminar");
             Logger.getLogger(PersonaController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
