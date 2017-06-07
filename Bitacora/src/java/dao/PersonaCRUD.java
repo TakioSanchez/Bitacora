@@ -11,8 +11,8 @@ import java.util.List;
  *
  * @author sanchez
  */
-public class PersonaCRUD extends Conexion{
-    
+public class PersonaCRUD extends Conexion {
+
     public int registrarPersona(Persona persona) throws Exception {
         String Consulta = "SELECT insertar_persona (?,?,?,?);";
         int resultado = -999;
@@ -33,7 +33,7 @@ public class PersonaCRUD extends Conexion{
         }
         return resultado;
     }
-    
+
     public PreparedStatement cargarPersona(PreparedStatement st, Persona persona) throws SQLException {
         st.setString(1, persona.getId_persona());
         st.setString(2, persona.getNombre_persona());
@@ -41,7 +41,7 @@ public class PersonaCRUD extends Conexion{
         st.setString(4, persona.getRol());
         return st;
     }
-    
+
     public <T> List listarPersona() throws Exception {
         List<Persona> personas;
         try {
@@ -66,7 +66,7 @@ public class PersonaCRUD extends Conexion{
         }
         return personas;
     }
-    
+
     public Persona extraerPersona(ResultSet rs) throws SQLException {
         Persona persona = new Persona();
         persona.setId_persona(rs.getString("id_persona"));
@@ -75,7 +75,7 @@ public class PersonaCRUD extends Conexion{
         persona.setRol(rs.getString("rol"));
         return persona;
     }
-    
+
     public Persona buscarPersona(String id_persona) throws Exception {
         Persona persona = null;
         this.abrirConexion();
@@ -89,8 +89,10 @@ public class PersonaCRUD extends Conexion{
         }
         return persona;
     }
-    
-    public void actualizarPersona(Persona persona, String id_persona) throws Exception {
+
+    public void actualizarPersona(Persona persona) throws Exception {
+        System.out.println(persona.getId_persona_anterior());
+        System.out.println(persona.getId_persona());
         try {
             this.abrirConexion();
             PreparedStatement st = this.conexion.prepareStatement(
@@ -99,7 +101,7 @@ public class PersonaCRUD extends Conexion{
             st.setString(2, persona.getNombre_persona());
             st.setString(3, persona.getApellidos_persona());
             st.setString(4, persona.getRol());
-            st.setString(5, id_persona);
+            st.setString(5, persona.getId_persona_anterior());
             st.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -108,7 +110,7 @@ public class PersonaCRUD extends Conexion{
             this.cerrarConexion();
         }
     }
-    
+
     public void eliminarPersona(String id_persona) throws Exception {
         try {
             this.abrirConexion();
@@ -122,8 +124,8 @@ public class PersonaCRUD extends Conexion{
             this.cerrarConexion();
         }
     }
-    
-    public Object modificarPersona(Object objeto) throws Exception {
+
+    public Object buscarPersona(Object objeto) throws Exception {
         Persona personaM = (Persona) objeto;
         Persona persona = null;
         this.abrirConexion();
@@ -137,5 +139,5 @@ public class PersonaCRUD extends Conexion{
         }
         return persona;
     }
-    
+
 }

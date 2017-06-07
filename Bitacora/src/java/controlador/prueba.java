@@ -17,9 +17,9 @@ import java.util.logging.Logger;
 public class prueba {
     public static void main(String[] args){
         PersonaCRUD pc = new PersonaCRUD();
-        Persona p = new Persona("2012060161", "Mario", "Marcos Santiago", "Alumno");
+//        Persona p = new Persona("2012060161", "Mario", "Marcos Santiago", "Alumno");
         try {
-            System.out.println(pc.registrarPersona(p));
+//            System.out.println(pc.registrarPersona(p));
         } catch (Exception ex) {
             System.out.println(ex);
             Logger.getLogger(prueba.class.getName()).log(Level.SEVERE, null, ex);

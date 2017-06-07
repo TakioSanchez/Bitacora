@@ -1,26 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controlador;
 
 import dao.PersonaCRUD;
 import entidades.Persona;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import sun.awt.X11.XConstants;
 
 /**
  *
@@ -41,46 +29,43 @@ public class PersonaController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");// Forzar a usar codificación UTF-8 iso-8859-1
-        
+
         // Sesiones
-        HttpSession sesion = request.getSession(false);
+//        HttpSession sesion = request.getSession(false);
         //String nombre_usuario = (String) sesion.getAttribute("nombre_usuario");
         //String rol = (String) sesion.getAttribute("rol");
         //if (nombre_usuario.equals("")) {
-            //response.sendRedirect("/inicio/administrador.jsp");
+        //response.sendRedirect("/inicio/administrador.jsp");
         //} else if (rol.equals("Administrador") || rol.equals("Empleado") || rol.equals("Vendedor")) {
-            //Acción a realizar
-            String action = request.getParameter("action");
-            switch (action) {
-                /**
-                 * *************** Respuestas a métodos POST
-                 * *********************
-                 */
-                case "insertar":
-                    insertarPersona(request, response, action);
-                    
-                    break;
-                case "actualizar":
-                    actualizarPersona(request, response, action);
-                    break;
-                /**
-                 * *************** Respuestas a métodos GET
-                 * *********************
-                 */
-                case "nuevo":
-                    //insertarPersona(request, response, action);
-                    break;
-                case "listar":
-                    listarPersonas(request, response, action);
-                    break;
-                case "modificar":
-                    modificarPersona(request, response, action);
-                    break;
-                case "eliminar":
-                    eliminarPersona(request, response, action);
-                    break;
-                case "buscar_persona":
-                    //buscarPersona(request, response, sesion, action);
+        //Acción a realizar
+        String action = request.getParameter("action");
+        switch (action) {
+            /**
+             * *************** Respuestas a métodos POST *********************
+             */
+            case "insertar":
+                insertarPersona(request, response, action);
+                break;
+            case "actualizar":
+                actualizarPersona(request, response, action);
+                break;
+            /**
+             * *************** Respuestas a métodos GET *********************
+             */
+            case "nuevo":
+                capturarPersona(request, response);
+                break;
+            case "listar":
+                listarPersonas(request, response, action);
+                break;
+            case "modificar":
+                modificarPersona(request, response);
+                break;
+            case "eliminar":
+                eliminarPersona(request, response);
+                break;
+            case "buscar_persona":
+            //buscarPersona(request, response, sesion, action);
             }
         //} else {
         //    try {
@@ -131,100 +116,121 @@ public class PersonaController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+
     private void insertarPersona(HttpServletRequest request, HttpServletResponse response, String action) {
-        Persona persona = extraerPersonaForm(request);
+        Persona persona = extraerPersonaForm(request, action);
         PersonaCRUD personaCRUD = new PersonaCRUD();
         int resultado;
         try {
             resultado = personaCRUD.registrarPersona(persona);
-            //System.err.println("Resultado "+resultado);
-            //enviar mensaje -> registrado
-            if (resultado == 1){
+            if (resultado == 1) { // registrado
                 response.sendRedirect("/Bitacora/PersonaController?action=listar");
-            }else{
-                //if (resultado == 0){
-                    response.sendRedirect("/Bitacora/error/error.jsp");
-                    //request.setAttribute('respuesta', );
-                //}else{
-                    //response.sendRedirect("/Bitacora/error/error.jsp");
-                //}
+            } else {//no registrado
+                response.sendRedirect("/Bitacora/error/error.jsp");
             }
         } catch (Exception ex) {
             listarPersonas(request, response, "error_registrar");
             System.out.println(ex);
-            Logger.getLogger(PersonaController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private Persona extraerPersonaForm(HttpServletRequest request) {
+
+    private Persona extraerPersonaForm(HttpServletRequest request, String action) {
         Persona persona = new Persona();
+        if (action.equals("actualizar")) {
+            persona.setId_persona_anterior(request.getParameter("id_persona_anterior"));
+        }
         persona.setId_persona(request.getParameter("id_persona"));
         persona.setNombre_persona(request.getParameter("nombre_persona"));
         persona.setApellidos_persona(request.getParameter("apellidos_persona"));
         persona.setRol(request.getParameter("rol"));
         return persona;
     }
-    
+
     private void listarPersonas(HttpServletRequest request, HttpServletResponse response, String action) {
         List<Persona> listaPersonas;
         PersonaCRUD personaCRUD = new PersonaCRUD();
         try {
             listaPersonas = (List<Persona>) personaCRUD.listarPersona();
-            mostrarPersonas(request, response, listaPersonas, action);
+            mostrarPersonas(request, response, listaPersonas);
         } catch (Exception ex) {
             System.out.println(ex);
-            Logger.getLogger(PersonaController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void mostrarPersonas(HttpServletRequest request, HttpServletResponse response, List<Persona> listaPersonas, String action) {
+
+    private void mostrarPersonas(HttpServletRequest request, HttpServletResponse response, List<Persona> listaPersonas) {
         request.setAttribute("listaPersonas", listaPersonas);
-        RequestDispatcher view = request.getRequestDispatcher("/persona/listarPersonas.jsp");
+        // atributos: request, titulo_pagina, pagina
+        inyectarAtributos(request, "Listar personas", "persona/listarPersonas.jsp");
+        RequestDispatcher view = request.getRequestDispatcher("TEMPLATE/layoutTemplate.jsp");
         try {
             view.forward(request, response);
         } catch (ServletException | IOException ex) {
-            System.err.println("No se pudo mostrar la lista de personas");
-            Logger.getLogger(PersonaController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+            System.err.println("No se pudo mostrar la vista: persona/listarPersonas.jsp");
         }
     }
-    
-    private void eliminarPersona(HttpServletRequest request, HttpServletResponse response, String action) {
+
+    private void eliminarPersona(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id_persona");
         PersonaCRUD personaCRUD = new PersonaCRUD();
         try {
             personaCRUD.eliminarPersona(id);
-            listarPersonas(request, response, action);
+            response.sendRedirect("/Bitacora/PersonaController?action=listar");//evita acciones repetidas
         } catch (Exception ex) {
+            System.out.println(ex);
             listarPersonas(request, response, "error_eliminar");
-            Logger.getLogger(PersonaController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void modificarPersona(HttpServletRequest request, HttpServletResponse response, String action) {
+
+    private void modificarPersona(HttpServletRequest request, HttpServletResponse response) {
         Persona personaEC = new Persona();
         personaEC.setId_persona(request.getParameter("id_persona"));
         PersonaCRUD personaCRUD = new PersonaCRUD();
         try {
-            Persona persona = (Persona) personaCRUD.modificarPersona(personaEC);
+            Persona persona = (Persona) personaCRUD.buscarPersona(personaEC);
             request.setAttribute("persona", persona);
-            RequestDispatcher view = request.getRequestDispatcher("/persona/actualizarPersona.jsp");
-            view.forward(request, response);
+
+            inyectarAtributos(request, "Modificar persona", "persona/actualizarPersona.jsp");
+            RequestDispatcher view = request.getRequestDispatcher("TEMPLATE/layoutTemplate.jsp");
+            try {
+                view.forward(request, response);
+            } catch (ServletException | IOException ex) {
+                System.out.println("Error al mostrar la vista: persona/actualizarPersona.jsp");
+                System.out.println(ex);
+            }
         } catch (Exception ex) {
+            System.out.println("Error al buscar persona");
+            System.out.println(ex);
             listarPersonas(request, response, "error_modificar");
-            Logger.getLogger(PersonaController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
-    
+
     private void actualizarPersona(HttpServletRequest request, HttpServletResponse response, String action) {
-        Persona persona = extraerPersonaForm(request);
+        Persona persona = extraerPersonaForm(request, action);
         PersonaCRUD personaCRUD = new PersonaCRUD();
         try {
-            personaCRUD.actualizarPersona(persona,persona.getId_persona());
-            listarPersonas(request, response, action);
+            personaCRUD.actualizarPersona(persona);
+            response.sendRedirect("/Bitacora/PersonaController?action=listar");
         } catch (Exception ex) {
+            System.out.println(ex);
             listarPersonas(request, response, "error_actualizar");
-            Logger.getLogger(PersonaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void inyectarAtributos(HttpServletRequest request, String titulo, String pagina) {
+        request.setAttribute("titulo", titulo + " | Bitácora");
+        request.setAttribute("pagina", "../" + pagina);
+    }
+
+    private void capturarPersona(HttpServletRequest request, HttpServletResponse response) {
+        inyectarAtributos(request, "Modificar persona", "persona/nuevoPersona.jsp");
+        RequestDispatcher view = request.getRequestDispatcher("TEMPLATE/layoutTemplate.jsp");
+        try {
+            view.forward(request, response);
+        } catch (ServletException | IOException ex) {
+            System.out.println("Error al mostrar la vista: persona/nuevoPersona.jsp");
+            System.out.println(ex);
         }
     }
 }

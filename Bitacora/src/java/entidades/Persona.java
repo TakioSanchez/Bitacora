@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entidades;
 
 /**
@@ -10,16 +5,19 @@ package entidades;
  * @author sanchez
  */
 public class Persona {
+
     private String id_persona;
+    private String id_persona_anterior;//para actualizar
     private String nombre_persona;
     private String apellidos_persona;
     private String rol;
-    
-    public Persona(){
+
+    public Persona() {
     }
-    
-    public Persona(String id_persona,String nombre_persona, String apellidos_persona, String rol){
+
+    public Persona(String id_persona, String id_persona_anterior, String nombre_persona, String apellidos_persona, String rol) {
         this.id_persona = id_persona;
+        this.id_persona_anterior = id_persona_anterior;
         this.nombre_persona = nombre_persona;
         this.apellidos_persona = apellidos_persona;
         this.rol = rol;
@@ -31,6 +29,14 @@ public class Persona {
 
     public void setId_persona(String id_persona) {
         this.id_persona = id_persona;
+    }
+
+    public String getId_persona_anterior() {
+        return id_persona_anterior;
+    }
+
+    public void setId_persona_anterior(String id_persona_anterior) {
+        this.id_persona_anterior = id_persona_anterior;
     }
 
     public String getNombre_persona() {
@@ -55,5 +61,5 @@ public class Persona {
 
     public void setRol(String rol) {
         this.rol = rol;
-    }    
+    }
 }
