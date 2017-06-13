@@ -1,6 +1,7 @@
 package dao;
 
 import entidades.Alumno;
+import entidades.Persona;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +15,7 @@ import java.util.List;
 public class AlumnoCRUD extends Conexion{
     
     public int registrarAlumno(Alumno alumno) throws Exception {
-        String Consulta = "SELECT insertar_persona (?,?,?,?);";
+        String Consulta = "SELECT insertar_alumno (?,?,?,?);";
         int resultado = -999;
         try {
             this.abrirConexion();
@@ -46,7 +47,7 @@ public class AlumnoCRUD extends Conexion{
         List<Alumno> alumnos;
         try {
             this.abrirConexion();
-            try (PreparedStatement st = this.conexion.prepareStatement("SELECT * FROM alumno")) {
+            try (PreparedStatement st = this.conexion.prepareStatement("SELECT * FROM VISTA_ALUMNOS")) {
                 alumnos = new ArrayList();
                 try (ResultSet rs = st.executeQuery()) {
                     while (rs.next()) {
@@ -69,7 +70,9 @@ public class AlumnoCRUD extends Conexion{
     
     public Alumno extraerAlumno(ResultSet rs) throws SQLException {
         Alumno alumno = new Alumno();
-        alumno.setMatricula(rs.getString("matricula"));
+        alumno.setMatricula(rs.getString("id_persona"));
+        alumno.setNombre_alumno(rs.getString("nombre_persona"));
+        alumno.setApellidos_alumno(rs.getString("apellidos_persona"));
         alumno.setCarrera(rs.getString("carrera"));
         alumno.setSemestre(rs.getString("semestre"));
         alumno.setGrupo(rs.getString("grupo"));
@@ -90,17 +93,19 @@ public class AlumnoCRUD extends Conexion{
         return alumno;
     }
     
-    public void actualizarPersona(Alumno alumno, String matricula) throws Exception {
+    public void actualizarAlumno(Alumno alumno) throws Exception {
         try {
             this.abrirConexion();
             PreparedStatement st = this.conexion.prepareStatement(
-                    "UPDATE alumno SET matricula = ?, carrera = ?, semestre = ?, grupo = ? WHERE matricula = ?");
+                    "SELECT actualizar_alumno(?,?,?,?,?,?,?);");
             st.setString(1, alumno.getMatricula());
-            st.setString(2, alumno.getCarrera());
-            st.setString(3, alumno.getSemestre());
-            st.setString(4, alumno.getGrupo());
-            st.setString(5, matricula);
-            st.executeUpdate();
+            st.setString(2, alumno.getMatricula_anterior());
+            st.setString(3, alumno.getNombre_alumno());
+            st.setString(4, alumno.getApellidos_alumno());
+            st.setString(5, alumno.getCarrera());
+            st.setString(6, alumno.getSemestre());
+            st.setString(7, alumno.getGrupo());
+            st.executeQuery();
         } catch (Exception e) {
             System.out.println(e);
             throw e;
@@ -112,7 +117,7 @@ public class AlumnoCRUD extends Conexion{
     public void eliminarAlumno(String matricula) throws Exception {
         try {
             this.abrirConexion();
-            PreparedStatement st = this.conexion.prepareStatement("DELETE FROM alumno WHERE matricula = ?");
+            PreparedStatement st = this.conexion.prepareStatement("DELETE FROM persona WHERE id_persona = ?");
             st.setString(1, matricula);
             st.executeUpdate();
         } catch (Exception e) {
@@ -138,4 +143,18 @@ public class AlumnoCRUD extends Conexion{
         return alumno;
     }
     
+    public Object buscarAlumno(Object objeto) throws Exception {
+        Alumno alumnoM = (Alumno) objeto;
+        Alumno alumno = null;
+        this.abrirConexion();
+        try (PreparedStatement st = this.conexion.prepareStatement("SELECT * FROM VISTA_ALUMNOS WHERE id_persona = ? ")) {
+            st.setString(1, alumnoM.getMatricula());
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    alumno = (Alumno) extraerAlumno(rs);
+                }
+            }
+        }
+        return alumno;
+    }    
 }

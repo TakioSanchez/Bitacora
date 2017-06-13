@@ -15,8 +15,10 @@
         <h3>Administrador</h3>
         <a href="/Bitacora/PersonaController?action=listar"><label>Personas</label></a>
         <br>
-        <a href="/Bitacora/persona/listarAlumnos.jsp"><label>Alumnos</label></a>
+        <a href="/Bitacora/AlumnoController?action=listar"><label>Alumnos</label></a>
         <br>
-        <a href="Bitacora/persona/listarAdministradores"><label>Administradores</label></a>
+        <a href="Bitacora/SalaController?action=listar"><label>Salas</label></a>
+        <br>
+        <a href="Bitacora/ResgistroController?action=listar"><label>Registros</label></a>
     </body>
 </html>
