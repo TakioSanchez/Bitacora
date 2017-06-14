@@ -17,7 +17,7 @@
         <br>
         <a href="/Bitacora/AlumnoController?action=listar"><label>Alumnos</label></a>
         <br>
-        <a href="Bitacora/SalaController?action=listar"><label>Salas</label></a>
+        <a href="/Bitacora/SalaController?action=listar"><label>Salas</label></a>
         <br>
         <a href="Bitacora/ResgistroController?action=listar"><label>Registros</label></a>
     </body>

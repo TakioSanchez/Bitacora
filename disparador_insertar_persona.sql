@@ -88,6 +88,21 @@ FROM persona, alumno
 WHERE id_persona = matricula
 ORDER BY id_persona;
 
+DROP VIEW IF EXISTS VISTA_SALAS;
+CREATE VIEW VISTA_SALAS AS
+SELECT
+	id_persona,
+    nombre_persona,
+    apellidos_persona,
+    id_sala,
+    nombre_sala,
+    num_maquinas
+FROM persona, sala
+WHERE id_persona = id_encargado
+ORDER BY id_persona;
+    
+DELETE FROM sala WHERE id_sala = 57;
+SELECT * FROM VISTA_SALAS;
 select * from alumno;
 select * from persona;
 Select id_persona,nombre_persona,apellidos_persona,carrera,semestre,grupo FROM persona,alumno WHERE id_persona = matricula;
