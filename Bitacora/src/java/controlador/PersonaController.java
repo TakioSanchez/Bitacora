@@ -189,7 +189,6 @@ public class PersonaController extends HttpServlet {
         try {
             Persona persona = (Persona) personaCRUD.buscarPersona(personaEC);
             request.setAttribute("persona", persona);
-
             inyectarAtributos(request, "Modificar persona", "persona/actualizarPersona.jsp");
             RequestDispatcher view = request.getRequestDispatcher("TEMPLATE/layoutTemplate.jsp");
             try {

@@ -21,7 +21,6 @@
                     <th>Nombre</th>
                     <th>Apellidos</th>
                     <th>Rol</th>
-                    <th>Sexo</th>
                     <th></th>
                     <th></th>
                 </tr>

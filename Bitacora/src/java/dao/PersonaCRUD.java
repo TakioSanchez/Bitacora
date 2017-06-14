@@ -90,9 +90,7 @@ public class PersonaCRUD extends Conexion {
         return persona;
     }
 
-    public void actualizarPersona(Persona persona) throws Exception {
-        System.out.println(persona.getId_persona_anterior());
-        System.out.println(persona.getId_persona());
+    public void actualizarPersona(Persona persona) throws Exception {     
         try {
             this.abrirConexion();
             PreparedStatement st = this.conexion.prepareStatement(
