@@ -88,18 +88,15 @@ FROM persona, alumno
 WHERE id_persona = matricula
 ORDER BY id_persona;
 
-<<<<<<< HEAD
 -- SELECT insertar_persona ('2012060174','Takio','Sánchez Ramos','Administrador');
 -- SELECT insertar_persona ('201206169', 'Leonardo', 'Marcos Santiago', 'Administrado');
 -- SELECT insertar_persona ('2012060175','Juan','X X','Administrador');
 -- SELECT eliminar_persona ('2012060175');
 DESCRIBE persona;
 SELECT * FROM persona;
-=======
 select * from alumno;
 select * from persona;
 Select id_persona,nombre_persona,apellidos_persona,carrera,semestre,grupo FROM persona,alumno WHERE id_persona = matricula;
 select * FROM VISTA_ALUMNOS;
 UPDATE persona SET id_persona = '201303030', nombre_persona = 'Amairanii', apellidos_persona = 'Castillo Gutierrez' WHERE id_persona = '2013030320' ;
 SELECT actualizar_alumno ('2013030350','2013030320','Amairani','Castillo Gutierrez','enfermera','8','803-B');
->>>>>>> cc789de844b0c4ca044d4bddf107df6fa3206d91
