@@ -51,3 +51,5 @@ DELIMITER ;
 -- SELECT insertar_persona ('201206169', 'Leonardo', 'Marcos Santiago', 'Administrado');
 -- SELECT insertar_persona ('2012060175','Juan','X X','Administrador');
 -- SELECT eliminar_persona ('2012060175');
+DESCRIBE persona;
+SELECT * FROM persona;
