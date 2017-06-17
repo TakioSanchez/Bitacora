@@ -71,8 +71,8 @@ public class AlumnoCRUD extends Conexion{
     public Alumno extraerAlumno(ResultSet rs) throws SQLException {
         Alumno alumno = new Alumno();
         alumno.setMatricula(rs.getString("id_persona"));
-        alumno.setNombre_alumno(rs.getString("nombre_persona"));
-        alumno.setApellidos_alumno(rs.getString("apellidos_persona"));
+        alumno.setNombre_persona(rs.getString("nombre_persona"));
+        alumno.setApellidos_persona(rs.getString("apellidos_persona"));
         alumno.setCarrera(rs.getString("carrera"));
         alumno.setSemestre(rs.getString("semestre"));
         alumno.setGrupo(rs.getString("grupo"));
@@ -100,8 +100,8 @@ public class AlumnoCRUD extends Conexion{
                     "SELECT actualizar_alumno(?,?,?,?,?,?,?);");
             st.setString(1, alumno.getMatricula());
             st.setString(2, alumno.getMatricula_anterior());
-            st.setString(3, alumno.getNombre_alumno());
-            st.setString(4, alumno.getApellidos_alumno());
+            st.setString(3, alumno.getNombre_persona());
+            st.setString(4, alumno.getApellidos_persona());
             st.setString(5, alumno.getCarrera());
             st.setString(6, alumno.getSemestre());
             st.setString(7, alumno.getGrupo());

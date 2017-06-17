@@ -15,10 +15,10 @@
         <input type="text" name="id_persona" value="<%=alumno.getMatricula()%>" title="Solo letras" maxlength="45" required="" autocomplete="off">
 
         <label>Nombre:</label>
-        <input type="text" name="nombre_alumno" value="<%=alumno.getNombre_alumno()%>" maxlength="60" required="" autocomplete="off">
+        <input type="text" name="nombre_persona" value="<%=alumno.getNombre_persona()%>" maxlength="60" required="" autocomplete="off">
 
         <label>Apellidos:</label>
-        <input type="text" name="apellidos_alumno" value="<%=alumno.getApellidos_alumno()%>" maxlength="60" required="" autocomplete="off">
+        <input type="text" name="apellidos_persona" value="<%=alumno.getApellidos_persona()%>" maxlength="60" required="" autocomplete="off">
         
         <label>Carrera:</label>
         <input type="text" name="carrera" value="<%=alumno.getCarrera()%>" maxlength="60" required="" autocomplete="off">

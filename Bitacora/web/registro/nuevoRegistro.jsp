@@ -16,7 +16,7 @@
         <%
             for (Sala sala : listaSalas) {
         %>
-        <option value="<%=sala.getId_sala%>"><%=sala.getNombre_sala%></option>
+        <option value="<%=sala.getId_sala()%>"><%=sala.getNombre_sala()%></option>
         <%
             }
         %>
