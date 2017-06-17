@@ -66,6 +66,31 @@ public class PersonaCRUD extends Conexion {
         }
         return personas;
     }
+    
+    public <T> List listarPersonaA() throws Exception {
+        List<Persona> personas;
+        try {
+            this.abrirConexion();
+            try (PreparedStatement st = this.conexion.prepareStatement("SELECT * FROM persona WHERE rol = 'Administrador'")) {
+                personas = new ArrayList();
+                try (ResultSet rs = st.executeQuery()) {
+                    while (rs.next()) {
+                        Persona persona = (Persona) extraerPersona(rs);
+                        personas.add(persona);
+                    }
+                }
+            } catch (Exception e) {
+                personas = null;
+                System.out.println(e);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            throw e;
+        } finally {
+            this.cerrarConexion();
+        }
+        return personas;
+    }
 
     public Persona extraerPersona(ResultSet rs) throws SQLException {
         Persona persona = new Persona();

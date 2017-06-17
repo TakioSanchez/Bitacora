@@ -7,19 +7,19 @@ package entidades;
 public class Alumno {
     private String matricula;
     private String matricula_anterior;
-    private String nombre_alumno;
-    private String apellidos_alumno;
+    private String nombre_persona;
+    private String apellidos_persona;
     private String carrera;
     private String semestre;
     private String grupo;
     
     public Alumno(){}
     
-    public Alumno(String matricula, String matricula_anteriror, String nombre_alumno, String apellidos_alumno, String carrera, String semestre, String grupo){
+    public Alumno(String matricula, String matricula_anteriror, String nombre_persona, String apellidos_persona, String carrera, String semestre, String grupo){
         this.matricula = matricula;
         this.matricula_anterior = matricula_anteriror;
-        this.nombre_alumno = nombre_alumno;
-        this.apellidos_alumno = apellidos_alumno;
+        this.nombre_persona = nombre_persona;
+        this.apellidos_persona = apellidos_persona;
         this.carrera = carrera;
         this.semestre = semestre;
         this.grupo = grupo;
@@ -41,20 +41,20 @@ public class Alumno {
         this.matricula_anterior = matricula_anterior;
     }
 
-    public String getNombre_alumno() {
-        return nombre_alumno;
+    public String getNombre_persona() {
+        return nombre_persona;
     }
 
-    public void setNombre_alumno(String nombre_alumno) {
-        this.nombre_alumno = nombre_alumno;
+    public void setNombre_persona(String nombre_persona) {
+        this.nombre_persona = nombre_persona;
     }
 
-    public String getApellidos_alumno() {
-        return apellidos_alumno;
+    public String getApellidos_persona() {
+        return apellidos_persona;
     }
 
-    public void setApellidos_alumno(String apellidos_alumno) {
-        this.apellidos_alumno = apellidos_alumno;
+    public void setApellidos_persona(String apellidos_persona) {
+        this.apellidos_persona = apellidos_persona;
     }
 
     public String getCarrera() {

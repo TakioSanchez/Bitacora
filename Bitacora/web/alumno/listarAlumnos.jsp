@@ -33,8 +33,8 @@
                     for (Alumno alumno : alumnos) {
                         out.print("<tr>" + "<td>" + (i + 1)
                                 + "<td>" + alumno.getMatricula()+ "</td>"
-                                + "<td>" + alumno.getNombre_alumno()+ "</td>"
-                                + "<td>" + alumno.getApellidos_alumno()+ "</td>"
+                                + "<td>" + alumno.getNombre_persona()+ "</td>"
+                                + "<td>" + alumno.getApellidos_persona()+ "</td>"
                                 + "<td>" + alumno.getCarrera()+ "</td>"
                                 + "<td>" + alumno.getSemestre()+ "</td>"
                                 + "<td>" + alumno.getGrupo()+ "</td>"

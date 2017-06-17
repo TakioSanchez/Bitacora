@@ -19,6 +19,6 @@
         <br>
         <a href="/Bitacora/SalaController?action=listar"><label>Salas</label></a>
         <br>
-        <a href="Bitacora/ResgistroController?action=listar"><label>Registros</label></a>
+        <a href="/Bitacora/RegistroController?action=listar"><label>Registros</label></a>
     </body>
 </html>

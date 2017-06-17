@@ -5,7 +5,11 @@
  */
 package controlador;
 
+import dao.PersonaCRUD;
+import dao.RegistroCRUD;
 import dao.SalaCRUD;
+import entidades.Persona;
+import entidades.Registro;
 import entidades.Sala;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -52,10 +56,10 @@ public class SalaController extends HttpServlet {
              * *************** Respuestas a métodos POST *********************
              */
             case "insertar":
-                //insertarSala(request, response, action);
+                insertarSala(request, response, action);
                 break;
             case "actualizar":
-                //actualizarSala(request, response, action);
+                actualizarSala(request, response, action);
                 break;
             /**
              * *************** Respuestas a métodos GET *********************
@@ -64,10 +68,10 @@ public class SalaController extends HttpServlet {
                 capturarSala(request, response);
                 break;
             case "listar":
-                listarSalas(request, response, action);
+                listarSalas(request, response);
                 break;
             case "modificar":
-                //modificarSala(request, response);
+                modificarSala(request, response);
                 break;
             case "eliminar":
                 //eliminarSala(request, response);
@@ -125,7 +129,7 @@ public class SalaController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
-    private void listarSalas(HttpServletRequest request, HttpServletResponse response, String action) {
+    private void listarSalas(HttpServletRequest request, HttpServletResponse response) {
         List<Sala> listaSalas;
         SalaCRUD salaCRUD = new SalaCRUD();
         try {
@@ -155,6 +159,9 @@ public class SalaController extends HttpServlet {
     }
     
     private void capturarSala(HttpServletRequest request, HttpServletResponse response) {
+        List<Persona> listaPersonas = null;
+        listaPersonas = listarPersonas(request, response);
+        request.setAttribute("listaPersonas", listaPersonas);
         inyectarAtributos(request, "Modificar sala", "sala/nuevoSala.jsp");
         RequestDispatcher view = request.getRequestDispatcher("TEMPLATE/layoutTemplate.jsp");
         try {
@@ -162,6 +169,88 @@ public class SalaController extends HttpServlet {
         } catch (ServletException | IOException ex) {
             System.out.println("Error al mostrar la vista: sala/nuevoSala.jsp");
             System.out.println(ex);
+        }
+    }
+    
+    private List<Persona> listarPersonas(HttpServletRequest request, HttpServletResponse response) {
+        List<Persona> listaPersonas = null;
+        PersonaCRUD personaCRUD = new PersonaCRUD();
+        try {
+            listaPersonas = (List<Persona>) personaCRUD.listarPersonaA();
+            //mostrarPersonas(request, response, listaPersonas);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return listaPersonas;
+    }
+    
+    private void insertarSala(HttpServletRequest request, HttpServletResponse response, String action) {
+        SalaCRUD salaCRUD = new SalaCRUD();
+        Sala sala = extraerSalaForm(request, action);
+        System.out.println(sala.getId_sala());
+        System.out.println(sala.getNombre_sala());
+        System.out.println(sala.getNum_maquinas());
+        System.out.println(sala.getId_encargado());
+        try {
+            salaCRUD.registrarSala(sala);
+            response.sendRedirect("/Bitacora/SalaController?action=listar");
+        } catch (Exception ex) {
+            System.out.println(ex);
+            try {
+                response.sendRedirect("/Bitacora/error/error.jsp");
+            } catch (IOException ex1) {
+                System.out.println(ex1);
+            }
+        }
+    }
+
+    private Sala extraerSalaForm(HttpServletRequest request, String action) {
+        Sala sala = new Sala();
+        if (action.equals("actualizar")) {
+            sala.setId_sala(Integer.valueOf(request.getParameter("id_sala").trim()));
+        }
+        sala.setNombre_sala(request.getParameter("nombre_sala").trim());
+        sala.setNum_maquinas(Integer.valueOf(request.getParameter("num_maquinas").trim()));
+        sala.setId_encargado(request.getParameter("id_encargado").trim());
+        
+        return sala;
+    }
+    
+    private void modificarSala(HttpServletRequest request, HttpServletResponse response) {
+        SalaCRUD salaCRUD = new SalaCRUD();
+        List<Persona> listaPersonas = null;
+        listaPersonas = listarPersonas(request, response);
+        request.setAttribute("listaPersonas", listaPersonas);
+        int id_sala = Integer.valueOf(request.getParameter("id_sala").trim());
+        System.out.println(id_sala);
+        try {
+            Sala sala = (Sala) salaCRUD.buscarSala(id_sala);
+            request.setAttribute("sala", sala);
+            inyectarAtributos(request, "Modificar sala", "sala/actualizarSala.jsp");
+            RequestDispatcher view = request.getRequestDispatcher("TEMPLATE/layoutTemplate.jsp");
+            try {
+                view.forward(request, response);
+            } catch (ServletException | IOException ex) {
+                System.out.println("Error al mostrar la vista: sala/actualizaSala.jsp");
+                System.out.println(ex);
+            }
+        } catch (Exception ex) {
+            System.out.println("Error al buscar sala");
+            System.out.println(ex);
+            listarSalas(request, response);
+        }
+    }
+    
+    private void actualizarSala(HttpServletRequest request, HttpServletResponse response, String action) {
+        Sala sala = extraerSalaForm(request, action);
+        String id_encargado_anterior = request.getParameter("id_encargado_anterior");
+        SalaCRUD salaCRUD = new SalaCRUD();
+        try {
+            salaCRUD.actualizarSala(sala,id_encargado_anterior);
+            response.sendRedirect("/Bitacora/SalaController?action=listar");
+        } catch (Exception ex) {
+            System.out.println(ex);
+            listarSalas(request, response);
         }
     }
 }

@@ -21,6 +21,8 @@
                     <th>Nombre</th>
                     <th>Num de equipos</th>
                     <th>Encargado</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -34,6 +36,8 @@
                                 + "<td>" + sala.getNombre_sala() + "</td>"
                                 + "<td>" + sala.getNum_maquinas()+ "</td>"
                                 + "<td>" + sala.getId_encargado() + "</td>"
+                                + "<td>" + sala.getNombre_persona()+ "</td>"
+                                + "<td>" + sala.getApellidos_persona()+ "</td>"
                                 + "<td><a class='btn btn-warning' href=\"/Bitacora/SalaController?action=modificar&id_sala=" + sala.getId_sala() + "\">Modificar</a></td>"
                                 + "<td><a class='btn btn-danger' href=\"javascript:if (confirm('¿Estás seguro de eliminar?')){parent.location='/Bitacora/SalaController?action=eliminar&id_sala=" + sala.getId_sala() + "';};\">Eliminar</a></td>" + "</tr>");
                         i++;

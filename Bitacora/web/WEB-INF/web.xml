@@ -8,9 +8,17 @@
         <servlet-name>PersonaController</servlet-name>
         <servlet-class>controlador.PersonaController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RegistroController</servlet-name>
+        <servlet-class>controlador.RegistroController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PersonaController</servlet-name>
         <url-pattern>/PersonaController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegistroController</servlet-name>
+        <url-pattern>/RegistroController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
