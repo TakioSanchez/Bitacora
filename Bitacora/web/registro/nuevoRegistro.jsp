@@ -22,17 +22,16 @@
         %>
     </select>
 
-    <select name="num_maquinas" required="" onchange="establecerNumMaxEquipo()" style="display: none;">
+    <select name="num_maquinas" required="num_maquinas" onchange="establecerNumMaxEquipo()" style="display: none;">
         <option></option>
         <%
             for (Sala sala : listaSalas) {
         %>
-        <option value="<%=sala.getNum_maquinas%>"><%=sala.getNum_maquinas%></option>
+        <option value="<%=sala.getNum_maquinas()%>"><%=sala.getNum_maquinas()%></option>
         <%
             }
         %>
     </select>
-
     <label>Equipo</label>
     <input type="number" name="num_equipo" id="num_equipo" step="1" required="" autocomplete="off">
 
