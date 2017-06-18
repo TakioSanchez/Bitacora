@@ -137,6 +137,7 @@ public class RegistroController extends HttpServlet {
             System.out.println("Error al mostrar la vista: registro/nuevoRegistro.jsp");
         }
     }
+
     private List<Sala> listarSalas(HttpServletRequest request, HttpServletResponse response) {
         List<Sala> listaSalas = null;
         SalaCRUD salaCRUD = new SalaCRUD();
@@ -181,7 +182,7 @@ public class RegistroController extends HttpServlet {
         registro.setFecha(Date.valueOf(request.getParameter("fecha").trim()));
         registro.setHora_entrada(Time.valueOf(request.getParameter("hora_entrada").trim()));
         registro.setHora_salida(Time.valueOf(request.getParameter("hora_salida").trim()));
-        registro.setObservaciones(request.getParameter("num_equipo").trim());
+        registro.setObservaciones(request.getParameter("observaciones").trim());
 
         return registro;
     }
@@ -189,9 +190,15 @@ public class RegistroController extends HttpServlet {
     private void modificarRegistro(HttpServletRequest request, HttpServletResponse response) {
         RegistroCRUD registroCRUD = new RegistroCRUD();
         int id_registro = Integer.valueOf(request.getParameter("id_registro").trim());
+        
+        List<Sala> listaSalas;
+        listaSalas = listarSalas(request, response);
+        request.setAttribute("listaSalas", listaSalas);
+
         try {
             Registro registro = (Registro) registroCRUD.buscarRegistro(id_registro);
             request.setAttribute("registro", registro);
+
             inyectarAtributos(request, "Modificar registro", "registro/actualizarRegistro.jsp");
             RequestDispatcher view = request.getRequestDispatcher("TEMPLATE/layoutTemplate.jsp");
             try {

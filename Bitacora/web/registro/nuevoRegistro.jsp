@@ -22,7 +22,7 @@
         %>
     </select>
 
-    <select name="num_maquinas" required="num_maquinas" onchange="establecerNumMaxEquipo()" style="display: none;">
+    <select name="num_maquinas" onchange="establecerNumMaxEquipo()" style="display: none;">
         <option></option>
         <%
             for (Sala sala : listaSalas) {
@@ -40,11 +40,11 @@
     <label>fecha:</label>
     <input type="date" name="fecha" required="" autocomplete="off">
     <label>hora entrada:</label>
-    <input type="time" name="hora_entrada" required="" autocomplete="off">
-    <input type="time" name="hora_salida" required="" autocomplete="off">
+    <input type="datetime" name="hora_entrada" required="" autocomplete="off">
+    <input type="datetime" name="hora_salida" required="" autocomplete="off">
     <label>Observaciones:</label>
-    <textarea maxlength="255"></textarea>
+    <textarea name="observaciones" maxlength="255"></textarea>
     
     <a href="/Bitacora/RegistroController?action=listar">Cancelar</a>
-    <input class="btn btn-success col-md-5 pull-right" type="submit" id="registrar" value="Guardar">
+    <input type="submit" id="registrar" value="Guardar">
 </form>
