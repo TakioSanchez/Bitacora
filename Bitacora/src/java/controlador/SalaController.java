@@ -74,7 +74,7 @@ public class SalaController extends HttpServlet {
                 modificarSala(request, response);
                 break;
             case "eliminar":
-                //eliminarSala(request, response);
+                eliminarSala(request, response);
                 break;
             case "buscar_sala":
             //buscarSala(request, response, sesion, action);
@@ -243,11 +243,23 @@ public class SalaController extends HttpServlet {
     
     private void actualizarSala(HttpServletRequest request, HttpServletResponse response, String action) {
         Sala sala = extraerSalaForm(request, action);
-        String id_encargado_anterior = request.getParameter("id_encargado_anterior");
+        String id_encargado = request.getParameter("id_encargado");
         SalaCRUD salaCRUD = new SalaCRUD();
         try {
-            salaCRUD.actualizarSala(sala,id_encargado_anterior);
+            salaCRUD.actualizarSala(sala,id_encargado);
             response.sendRedirect("/Bitacora/SalaController?action=listar");
+        } catch (Exception ex) {
+            System.out.println(ex);
+            listarSalas(request, response);
+        }
+    }
+    
+    private void eliminarSala(HttpServletRequest request, HttpServletResponse response) {
+        SalaCRUD salaCRUD = new SalaCRUD();
+        int id_sala = Integer.valueOf(request.getParameter("id_sala").trim());
+        try {
+            salaCRUD.eliminarSala(id_sala);
+            response.sendRedirect("/Bitacora/SalaController?action=listar");//evita acciones repetidas
         } catch (Exception ex) {
             System.out.println(ex);
             listarSalas(request, response);

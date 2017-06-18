@@ -10,12 +10,12 @@ public class Alumno {
     private String nombre_persona;
     private String apellidos_persona;
     private String carrera;
-    private String semestre;
+    private int semestre;
     private String grupo;
     
     public Alumno(){}
     
-    public Alumno(String matricula, String matricula_anteriror, String nombre_persona, String apellidos_persona, String carrera, String semestre, String grupo){
+    public Alumno(String matricula, String matricula_anteriror, String nombre_persona, String apellidos_persona, String carrera, int semestre, String grupo){
         this.matricula = matricula;
         this.matricula_anterior = matricula_anteriror;
         this.nombre_persona = nombre_persona;
@@ -65,11 +65,11 @@ public class Alumno {
         this.carrera = carrera;
     }
 
-    public String getSemestre() {
+    public int getSemestre() {
         return semestre;
     }
 
-    public void setSemestre(String semestre) {
+    public void setSemestre(int semestre) {
         this.semestre = semestre;
     }
 

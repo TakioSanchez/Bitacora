@@ -86,16 +86,15 @@ public class SalaCRUD extends Conexion{
         return sala;
     }
 
-    public void actualizarSala(Sala sala, String id_encargado_anterior) throws Exception {
+    public void actualizarSala(Sala sala, String id_encargado) throws Exception {
         int contador = 0;
         try {
             this.abrirConexion();
             PreparedStatement st = this.conexion.prepareStatement(
-                    "UPDATE sala SET nombre_sala,num_maquinas,id_encargado WHERE id_sala = ?");
+                    "UPDATE sala SET nombre_sala = ?,num_maquinas=?,id_encargado=? WHERE id_sala = ?");
             st.setString(++contador, sala.getNombre_sala());
             st.setInt(++contador, sala.getNum_maquinas());
-            st.setString(++contador, sala.getId_encargado());
-            st.setString(++contador, id_encargado_anterior);
+            st.setString(++contador, id_encargado);
             st.setInt(++contador, sala.getId_sala());
             st.executeUpdate();
         } catch (Exception e) {
@@ -106,4 +105,17 @@ public class SalaCRUD extends Conexion{
         }
     }
     
+    public void eliminarSala(int id_sala) throws Exception {
+        try {
+            this.abrirConexion();
+            PreparedStatement st = this.conexion.prepareStatement("DELETE FROM sala WHERE id_sala = ?");
+            st.setInt(1, id_sala);
+            st.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+            throw e;
+        } finally {
+            this.cerrarConexion();
+        }
+    }
 }

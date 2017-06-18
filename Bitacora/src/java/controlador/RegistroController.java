@@ -1,6 +1,7 @@
 package controlador;
 
 import dao.RegistroCRUD;
+import dao.SalaCRUD;
 import entidades.Registro;
 import entidades.Sala;
 import java.io.IOException;
@@ -124,8 +125,9 @@ public class RegistroController extends HttpServlet {
     }
 
     private void capturarRegistro(HttpServletRequest request, HttpServletResponse response) {
-        List <Sala> listaSalas =  null;
-        request.setAttribute("listaSalas",listaSalas);
+        List<Sala> listaSalas = null;
+        listaSalas = listarSalas(request, response);
+        request.setAttribute("listaSalas", listaSalas);
         inyectarAtributos(request, "Nuevo registro", "registro/nuevoRegistro.jsp");
         RequestDispatcher view = request.getRequestDispatcher("TEMPLATE/layoutTemplate.jsp");
         try {
@@ -134,6 +136,17 @@ public class RegistroController extends HttpServlet {
             System.out.println(ex);
             System.out.println("Error al mostrar la vista: registro/nuevoRegistro.jsp");
         }
+    }
+    private List<Sala> listarSalas(HttpServletRequest request, HttpServletResponse response) {
+        List<Sala> listaSalas = null;
+        SalaCRUD salaCRUD = new SalaCRUD();
+        try {
+            listaSalas = (List<Sala>) salaCRUD.listarSala();
+            //mostrarSalas(request, response, listaSalas);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return listaSalas;
     }
 
     private void inyectarAtributos(HttpServletRequest request, String titulo, String pagina) {

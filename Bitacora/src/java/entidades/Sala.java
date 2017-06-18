@@ -7,7 +7,6 @@ package entidades;
 public class Sala {
 
     private int id_sala;
-    private String id_sala_anterior;//para actualizar
     private String nombre_sala;
     private int num_maquinas;
     private String id_encargado;
@@ -17,9 +16,8 @@ public class Sala {
     public Sala() {
     }
 
-    public Sala(int id_sala, String id_sala_anterior, String nombre_sala, int num_maquinas, String id_encargado, String nombre_persona, String apellidos_persona) {
+    public Sala(int id_sala, String nombre_sala, int num_maquinas, String id_encargado, String nombre_persona, String apellidos_persona) {
         this.id_sala = id_sala;
-        this.id_sala_anterior = id_sala_anterior;
         this.nombre_sala = nombre_sala;
         this.num_maquinas = num_maquinas;
         this.id_encargado = id_encargado;
@@ -40,14 +38,6 @@ public class Sala {
 
     public void setId_sala(int id_sala) {
         this.id_sala = id_sala;
-    }
-
-    public String getId_sala_anterior() {
-        return id_sala_anterior;
-    }
-
-    public void setId_sala_anterior(String id_sala_anterior) {
-        this.id_sala_anterior = id_sala_anterior;
     }
 
     public String getNombre_sala() {
