@@ -45,6 +45,7 @@
     <input type="time" name="hora_salida" required="" autocomplete="off">
     <label>Observaciones:</label>
     <textarea maxlength="255"></textarea>
+    
     <a href="/Bitacora/RegistroController?action=listar">Cancelar</a>
     <input class="btn btn-success col-md-5 pull-right" type="submit" id="registrar" value="Guardar">
 </form>
