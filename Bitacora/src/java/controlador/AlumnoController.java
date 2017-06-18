@@ -209,7 +209,7 @@ public class AlumnoController extends HttpServlet {
         alumno.setNombre_persona(request.getParameter("nombre_persona"));
         alumno.setApellidos_persona(request.getParameter("apellidos_persona"));
         alumno.setCarrera(request.getParameter("carrera"));
-        alumno.setSemestre(request.getParameter("semestre"));
+        alumno.setSemestre(Integer.valueOf(request.getParameter("semestre")));
         alumno.setGrupo(request.getParameter("grupo"));
         return alumno;
     }

@@ -38,7 +38,7 @@ public class AlumnoCRUD extends Conexion{
     public PreparedStatement cargarAlumno(PreparedStatement st, Alumno alumno) throws SQLException {
         st.setString(1, alumno.getMatricula());
         st.setString(2, alumno.getCarrera());
-        st.setString(3, alumno.getSemestre());
+        st.setInt(3, alumno.getSemestre());
         st.setString(4, alumno.getGrupo());
         return st;
     }
@@ -74,7 +74,7 @@ public class AlumnoCRUD extends Conexion{
         alumno.setNombre_persona(rs.getString("nombre_persona"));
         alumno.setApellidos_persona(rs.getString("apellidos_persona"));
         alumno.setCarrera(rs.getString("carrera"));
-        alumno.setSemestre(rs.getString("semestre"));
+        alumno.setSemestre(rs.getInt("semestre"));
         alumno.setGrupo(rs.getString("grupo"));
         return alumno;
     }
@@ -103,7 +103,7 @@ public class AlumnoCRUD extends Conexion{
             st.setString(3, alumno.getNombre_persona());
             st.setString(4, alumno.getApellidos_persona());
             st.setString(5, alumno.getCarrera());
-            st.setString(6, alumno.getSemestre());
+            st.setInt(6, alumno.getSemestre());
             st.setString(7, alumno.getGrupo());
             st.executeQuery();
         } catch (Exception e) {

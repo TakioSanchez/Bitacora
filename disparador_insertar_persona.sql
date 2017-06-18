@@ -127,6 +127,7 @@ ORDER BY id_persona;
 DELETE FROM sala WHERE id_sala = 57;
 SELECT * FROM VISTA_SALAS;
 
+UPDATE sala SET nombre_sala = 'skjhkj',num_maquinas =25,id_encargado= '2012030782' WHERE id_sala = 2;
 -- SELECT insertar_persona ('2012060174','Takio','Sánchez Ramos','Administrador');
 -- SELECT insertar_persona ('201206169', 'Leonardo', 'Marcos Santiago', 'Administrado');
 -- SELECT insertar_persona ('2012060175','Juan','X X','Administrador');
