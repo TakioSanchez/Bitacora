@@ -35,12 +35,13 @@ CREATE TABLE alumno(
 )ENGINE=INNODB 
  DEFAULT CHARSET=utf8 
  COLLATE=utf8_general_ci;
- 
+
+DROP TABLE IF EXISTS usuario;
 CREATE TABLE usuario(
-	usuario 		VARCHAR(15) NOT NULL,
-    contrasenia			varchar(50) NOT NULL,
-	metodo 				ENUM('sha1') DEFAULT 'sha1' NOT NULL, -- metodo para encriptar contraseña
-    PRIMARY KEY(usuario)
+	nombre_usuario 		VARCHAR(15) NOT NULL,
+    contrasenia			varchar(255) NOT NULL,
+	metodo 				ENUM('sha2') DEFAULT 'sha2' NOT NULL, -- metodo para encriptar contraseña
+    PRIMARY KEY(nombre_usuario)
 )ENGINE=INNODB 
  DEFAULT CHARSET=utf8 
  COLLATE=utf8_general_ci;
@@ -83,7 +84,7 @@ ALTER TABLE alumno
     
 ALTER TABLE usuario
 	ADD CONSTRAINT fkusuarios_personas
-    FOREIGN KEY (usuario)
+    FOREIGN KEY (nombre_usuario)
     REFERENCES persona(id_persona) ON DELETE CASCADE ON UPDATE CASCADE;
     
 ALTER TABLE sala
