@@ -18,3 +18,4 @@ WHERE u.nombre_usuario = p.id_persona AND p.id_persona = a.matricula;
 SELECT * FROM persona;
 SELECT * FROM alumno;
 SELECT * FROM usuario;
+SELECT * FROM registro;
