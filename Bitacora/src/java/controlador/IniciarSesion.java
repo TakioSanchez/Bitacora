@@ -108,7 +108,7 @@ public class IniciarSesion extends HttpServlet {
                 }
                 //Mostramos la página según el rol
                 if (usuario.getRol().equals("Alumno")) {
-                    response.sendRedirect("/Bitacora/RegistroController?action=nuevo");
+                    response.sendRedirect("/Bitacora/RegistroController?action=nuevo_alumno");
                 } else {
                     response.sendRedirect("/Bitacora/inicio/administrador.jsp");
                 }

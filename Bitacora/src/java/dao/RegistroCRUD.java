@@ -4,6 +4,7 @@ import entidades.Registro;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,4 +131,12 @@ public class RegistroCRUD extends Conexion {
         }
     }
 
+    public boolean validarHoraEntSal(Time hora_entrada, Time hora_salida) {
+//        if ((hora_salida - hora_entrada) < 1) {
+//
+//        } else {
+//            return true;
+//        }
+        return false;
+    }
 }

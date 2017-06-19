@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -31,35 +32,79 @@ public class RegistroController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
-        switch (action) {
-            /**
-             * *************** Respuestas a métodos POST *********************
-             */
-            case "insertar":
-                insertarRegistro(request, response, action);
-                break;
-            case "actualizar":
-                actualizarRegistro(request, response, action);
-                break;
-            /**
-             * *************** Respuestas a métodos GET *********************
-             */
-            case "nuevo":
-                capturarRegistro(request, response);
-                break;
-            case "listar":
-                listarRegistros(request, response);
-                break;
-            case "modificar":
-                modificarRegistro(request, response);
-                break;
-            case "eliminar":
-                eliminarRegistro(request, response);
-                break;
-            case "buscar_Registro":
-            //buscarRegistro(request, response, sesion, action);
+        try {
+            // Sesiones
+            HttpSession sesion = request.getSession(false);
+            String nombre_usuario = (String) sesion.getAttribute("nombre_usuario");
+            String rol = (String) sesion.getAttribute("rol");
+            if (nombre_usuario.equals("")) {
+                response.sendRedirect("/Bitacora/");
+            } else if (rol.equals("Administrador")) {
+                //Acción a realizar
+                String action = request.getParameter("action");
+                switch (action) {
+                    /**
+                     * *************** Respuestas a métodos POST
+                     * *********************
+                     */
+                    case "insertar":
+                        insertarRegistro(request, response, action, sesion);
+                        break;
+                    case "actualizar":
+                        actualizarRegistro(request, response, action);
+                        break;
+                    /**
+                     * *************** Respuestas a métodos GET
+                     * *********************
+                     */
+                    case "nuevo":
+                        capturarRegistro(request, response);
+                        break;
+                    case "listar":
+                        listarRegistros(request, response);
+                        break;
+                    case "modificar":
+                        modificarRegistro(request, response);
+                        break;
+                    case "eliminar":
+                        eliminarRegistro(request, response);
+                        break;
+                    case "buscar_Registro":
+                    //buscarRegistro(request, response, sesion, action);
+                }
+            } else if (rol.equals("Alumno")) {
+                String action = request.getParameter("action");
+                switch (action) {
+                    /**
+                     * *************** Respuestas a métodos POST
+                     * *********************
+                     */
+                    case "insertar":
+                        insertarRegistro(request, response, action, sesion);
+                        break;
+                    /**
+                     * *************** Respuestas a métodos GET
+                     * *********************
+                     */
+                    case "nuevo_alumno":
+                        capturarRegistroAlumno(request, response, sesion);
+                        break;
+                }
+            } else {
+                try {
+                    sesion.invalidate();
+                    response.sendRedirect("/Bitacora/");
+                } catch (IOException e) {
+                    System.out.println(e);
+                    response.sendRedirect("/Bitacora/");
+                }
+                response.sendRedirect("/Bitacora/");
             }
+        } catch (IOException e) {
+            System.out.println(e);
+            response.sendRedirect("/Bitacora/");
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -125,9 +170,10 @@ public class RegistroController extends HttpServlet {
     }
 
     private void capturarRegistro(HttpServletRequest request, HttpServletResponse response) {
-        List<Sala> listaSalas = null;
+        List<Sala> listaSalas;
         listaSalas = listarSalas(request, response);
         request.setAttribute("listaSalas", listaSalas);
+
         inyectarAtributos(request, "Nuevo registro", "registro/nuevoRegistro.jsp");
         RequestDispatcher view = request.getRequestDispatcher("TEMPLATE/layoutTemplate.jsp");
         try {
@@ -155,18 +201,23 @@ public class RegistroController extends HttpServlet {
         request.setAttribute("pagina", "../" + pagina);
     }
 
-    private void insertarRegistro(HttpServletRequest request, HttpServletResponse response, String action) {
+    private void insertarRegistro(HttpServletRequest request, HttpServletResponse response, String action, HttpSession sesion) {
         RegistroCRUD registroCRUD = new RegistroCRUD();
         Registro registro = extraerRegistroForm(request, action);
         try {
             registroCRUD.registrarRegistro(registro);
-            response.sendRedirect("/Bitacora/RegistroController?action=listar");
+            if (((String) sesion.getAttribute("rol")).equals("Alumno")) {
+                response.sendRedirect("Iniciar?action=cerrar_sesion");
+            } else {
+                response.sendRedirect("/Bitacora/RegistroController?action=listar");
+            }
         } catch (Exception ex) {
             System.out.println(ex);
             try {
                 response.sendRedirect("/Bitacora/error/error.jsp");
             } catch (IOException ex1) {
                 System.out.println(ex1);
+                sesion.invalidate();
             }
         }
     }
@@ -190,7 +241,7 @@ public class RegistroController extends HttpServlet {
     private void modificarRegistro(HttpServletRequest request, HttpServletResponse response) {
         RegistroCRUD registroCRUD = new RegistroCRUD();
         int id_registro = Integer.valueOf(request.getParameter("id_registro").trim());
-        
+
         List<Sala> listaSalas;
         listaSalas = listarSalas(request, response);
         request.setAttribute("listaSalas", listaSalas);
@@ -237,4 +288,28 @@ public class RegistroController extends HttpServlet {
             listarRegistros(request, response);
         }
     }
+
+    private void capturarRegistroAlumno(HttpServletRequest request, HttpServletResponse response, HttpSession sesion) {
+        List<Sala> listaSalas;
+        listaSalas = listarSalas(request, response);
+        request.setAttribute("listaSalas", listaSalas);
+        request.setAttribute("matricula", sesion.getAttribute("nombre_usuario"));
+        request.setAttribute("nombre", sesion.getAttribute("nombre_persona"));
+        request.setAttribute("apellidos", sesion.getAttribute("apellidos_persona"));
+        
+        inyectarAtributos(request, "Nuevo registro", "registro/nuevoRegistro.jsp");
+        RequestDispatcher view = request.getRequestDispatcher("TEMPLATE/layoutTemplate.jsp");
+        try {
+            view.forward(request, response);
+        } catch (ServletException | IOException ex) {
+            System.out.println(ex);
+            try {
+                response.sendRedirect("Iniciar/action=cerrar_sesion");
+            } catch (IOException ex1) {
+                System.out.println(ex1);
+                sesion.invalidate();
+            }
+        }
+    }
+
 }
